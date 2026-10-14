@@ -96,5 +96,236 @@ footer{background:var(--dark);color:#ddd0c1;text-align:center;padding:25px 12px;
 <button class="send" onclick="sendOrder()">Enviar pedido por WhatsApp</button>
 </div>
 </div>
+
+<script>
+const WHATSAPP = "51998391223";
+
+const productos = [
+["Choripanes","Choripan",8,["Carne","Pollo"]],
+["Hamburguesas","Burger clasica",10,["Carne","Pollo"]],
+["Hamburguesas","Burger chicken",13,["Carne","Pollo"]],
+["Hamburguesas","Burger Royal",13,["Carne","Pollo"]],
+["Hamburguesas","Burger Cheese",13,["Carne","Pollo"]],
+["Hamburguesas","Burger Hawaiana",14,["Carne","Pollo"]],
+["Hamburguesas","Burger a lo pobre",15,["Carne","Pollo"]],
+["Hamburguesas","Burger Avocado",15,["Carne","Pollo"]],
+["Hamburguesas","Burger Baconator",16,["Carne","Pollo"]],
+["Hamburguesas","Two Burger",17,["Carne","Pollo","Combinado"]],
+["Hamburguesas","Burger Monster",20,["Carne","Pollo","Combinado"]],
+["Alitas","Alitas x4",12,[]],
+["Alitas","Alitas x6",18,[]],
+["Alitas","Alitas x8",22,[]],
+["Alitas","Alitas x10",28,[]],
+["Alitas","Alitas x14",35,[]],
+["Salchipapas y salchis","Salchi Clasica",10,[]],
+["Salchipapas y salchis","Choripapa",12,[]],
+["Salchipapas y salchis","Salchi mixto",13,[]],
+["Salchipapas y salchis","Salchi Royal",14,[]],
+["Salchipapas y salchis","Salchi Nuggets",17,[]],
+["Salchipapas y salchis","Salchi Monster",18,[]],
+["Salchipapas y salchis","Salchi a lo misio",15,[]],
+["Salchipapas y salchis","Salchi hawaiana",15,[]],
+["Salchipapas y salchis","Salchipollo",15,[]],
+["Salchipapas y salchis","Choriroyal",16,[]],
+["Salchipapas y salchis","Salchipollo mixto",17,[]],
+["Carnes","Chuleta",20,[]],
+["Carnes","Bisteck",22,[]],
+["Carnes","Churrasco",20,[]],
+["Carnes","Chicharrón de chancho",25,[]],
+["Carnes","Costillas",30,[]],
+["Broaster","Ala broster",11,[]],
+["Broaster","Pierna broaster",12,[]],
+["Broaster","Encuentro broaster",12,[]],
+["Broaster","Pecho broaster",14,[]],
+["Broaster","Chicharrón de pollo",14,[]],
+["Broaster","1/4 pierna broster",22,[]],
+["Broaster","1/4 pecho broster",26,[]],
+["Broaster","1/2 pollo broster",40,[]],
+["Broaster","1 pollo broster",68,[]],
+["A la plancha","Ala a la plancha",12,[]],
+["A la plancha","Pierna a la plancha",13,[]],
+["A la plancha","Encuentro a la plancha",13,[]],
+["A la plancha","Pecho a la plancha",15,[]],
+["A la plancha","1/4 pierna a la plancha",23,[]],
+["A la plancha","1/4 pecho a la plancha",28,[]],
+["A la plancha","1/2 pollo a la plancha",42,[]],
+["A la plancha","1 pollo a la plancha",70,[]],
+["A lo pobre","Ala a lo pobre",11,[]],
+["A lo pobre","Pierna a lo pobre",12,[]],
+["A lo pobre","Encuentro a lo pobre",12,[]],
+["A lo pobre","Pecho a lo pobre",14,[]],
+["A lo pobre","1/4 pierna a lo pobre",23,[]],
+["A lo pobre","1/4 pecho a lo pobre",28,[]],
+["A lo pobre","1/2 pollo a lo pobre",42,[]],
+["A lo pobre","1 pollo a lo pobre",70,[]],
+["Light","Ala light",13,[]],
+["Light","Pierna light",14,[]],
+["Light","Encuentro light",14,[]],
+["Light","Pecho light",16,[]],
+["Light","1/4 pierna light",24,[]],
+["Light","1/4 pecho light",29,[]],
+["Light","1/2 pollo light",43,[]],
+["Light","1 pollo light",72,[]],
+["Bebidas","Limonada 1/2 lt",4,[]],
+["Bebidas","Limonada 1lt",8,[]],
+["Bebidas","Chicha 1/2lt",5,[]],
+["Bebidas","Chicha 1lt",10,[]],
+["Bebidas","Limonada Frozen 1/2 lt",5,[]],
+["Bebidas","Limonada Frozen 1lt",10,[]],
+["Bebidas","Maracuya 1/2 lt",7,[]],
+["Bebidas","Maracuya 1lt",14,[]],
+["Bebidas","Maracuya Frozen 1/2 lt",8,[]],
+["Bebidas","Maracuya Frozen 1lt",16,[]],
+["Bebidas","Agua manzana 1/2 lt",4,[]],
+["Bebidas","Agua manzana 1lt",8,[]],
+["Bebidas","Agua mineral",2,[]],
+["Bebidas","Gaseosa de vidrio",2.5,[]],
+["Bebidas","Gaseosa personal",4,[]],
+["Bebidas","Pepsi guaraná",2.5,[]],
+["Bebidas","Fanta",3.5,[]],
+["Bebidas","Gordita",6,[]],
+["Bebidas","Gaseosa 1lt",7,[]],
+["Bebidas","Gaseosa 1.5lt",10,[]],
+["Bebidas","Infusiones",2.5,[]],
+["Bebidas","Café",3,[]],
+["Jugos","Jugo clásico",7,[]],
+["Jugos","Jugo con leche",9,[]],
+["Jugos","Jugo combinado",8,[]],
+["Jugos","Surtido",9,[]],
+["Adicionales","Queso adicional",1,[]],
+["Adicionales","Jamón adicional",1,[]],
+["Adicionales","Huevo adicional",1.5,[]],
+["Adicionales","Piña adicional",1.5,[]],
+["Adicionales","Tocino adicional",1.5,[]],
+["Adicionales","Plátano adicional",2,[]],
+["Adicionales","Salchicha adicional",2,[]],
+["Adicionales","Chorizo adicional",3,[]],
+["Adicionales","Arroz porción",3,[]],
+["Adicionales","Papas porción",8,[]],
+["Adicionales","Papas media porción",4,[]],
+["Adicionales","Papas porción grande",12,[]],
+["Extras","Helado",5,[]]
+].map((p,i)=>({
+ id:i+1, categoria:p[0], nombre:p[1],
+ precio:p[2], variantes:p[3]
+}));
+
+let categoriaActiva="Todos";
+let carrito={};
+
+function dinero(n){
+ return "S/ "+Number(n).toFixed(2);
+}
+
+function dibujarCategorias(){
+ const nombres=["Todos",...new Set(productos.map(p=>p.categoria))];
+ document.getElementById("categories").innerHTML=
+ nombres.map(c=>`<button class="cat ${c===categoriaActiva?"active":""}" onclick="elegirCategoria(${JSON.stringify(c)})">${c}</button>`).join("");
+}
+
+function elegirCategoria(c){
+ categoriaActiva=c;
+ mostrarProductos();
+}
+
+function mostrarProductos(){
+ dibujarCategorias();
+ const busqueda=document.getElementById("search").value.toLowerCase();
+ const lista=productos.filter(p=>
+ (categoriaActiva==="Todos"||p.categoria===categoriaActiva)&&
+ (p.nombre+" "+p.categoria).toLowerCase().includes(busqueda)
+ );
+ document.getElementById("title").textContent=
+ categoriaActiva==="Todos"?"Todo el menú":categoriaActiva;
+ document.getElementById("shown").textContent=lista.length+" productos";
+
+ document.getElementById("products").innerHTML=lista.map(p=>{
+ let emoji=p.categoria==="Hamburguesas"||p.categoria==="Choripanes"?"🍔":
+ p.categoria==="Bebidas"||p.categoria==="Jugos"?"🥤":
+ p.categoria==="Alitas"||p.categoria==="Broaster"?"🍗":
+ p.categoria==="Extras"?"🍨":"🍽️";
+ return `<article class="product">
+ <div class="photo">${emoji}</div>
+ <div class="pbody">
+ <h3>${p.nombre}</h3>
+ <div class="category">${p.categoria}</div>
+ ${p.variantes.length?`<select class="variant" id="v${p.id}">${p.variantes.map(v=>`<option>${v}</option>`).join("")}</select>`:""}
+ <div class="pfoot"><span class="price">${dinero(p.precio)}</span>
+ <button class="add" onclick="agregar(${p.id})">+ Añadir</button></div>
+ </div></article>`;
+ }).join("")||"<p>No encontramos productos.</p>";
+
+ document.getElementById("count").textContent=
+ Object.values(carrito).reduce((s,p)=>s+p.cantidad,0);
+}
+
+function agregar(id){
+ const p=productos.find(x=>x.id===id);
+ const variante=p.variantes.length?
+ document.getElementById("v"+id).value:"Única";
+ const clave=id+"-"+variante;
+ if(!carrito[clave])carrito[clave]={id, variante, cantidad:0};
+ carrito[clave].cantidad++;
+ mostrarProductos();
+ abrirCarrito();
+}
+
+function abrirCarrito(){
+ document.getElementById("overlay").classList.add("open");
+ dibujarCarrito();
+}
+
+function closeCart(){
+ document.getElementById("overlay").classList.remove("open");
+}
+
+function dibujarCarrito(){
+ const items=Object.entries(carrito);
+ document.getElementById("cartitems").innerHTML=items.length?
+ items.map(([clave,item])=>{
+ const p=productos.find(x=>x.id===item.id);
+ return `<div class="cartrow">
+ <div><strong>${p.nombre}</strong><div class="small">${item.variante} · ${dinero(p.precio)} c/u</div></div>
+ <div class="qty"><button onclick="cambiarCantidad('${clave}',-1)">−</button><b>${item.cantidad}</b><button onclick="cambiarCantidad('${clave}',1)">+</button></div>
+ </div>`;
+ }).join(""):'<p class="note">Tu carrito está vacío. Añade productos del menú.</p>';
+
+ const total=items.reduce((s,[k,item])=>
+ s+productos.find(p=>p.id===item.id).precio*item.cantidad,0);
+ document.getElementById("total").textContent=dinero(total);
+}
+
+function cambiarCantidad(clave,cambio){
+ if(!carrito[clave])return;
+ carrito[clave].cantidad+=cambio;
+ if(carrito[clave].cantidad<=0)delete carrito[clave];
+ document.getElementById("count").textContent=
+ Object.values(carrito).reduce((s,p)=>s+p.cantidad,0);
+ dibujarCarrito();
+}
+
+function sendOrder(){
+ const items=Object.values(carrito);
+ if(!items.length){alert("Agrega al menos un producto.");return}
+ const nombre=document.getElementById("customer").value.trim();
+ const tipo=document.getElementById("ordertype").value;
+ const direccion=document.getElementById("address").value.trim();
+ if(!nombre){alert("Escribe tu nombre.");return}
+ if(tipo==="Delivery"&&!direccion){alert("Escribe tu dirección.");return}
+
+ const lineas=items.map(item=>{
+ const p=productos.find(x=>x.id===item.id);
+ return `• ${p.nombre} (${item.variante}) x${item.cantidad} — ${dinero(p.precio*item.cantidad)}`;
+ });
+ const total=items.reduce((s,item)=>
+ s+productos.find(p=>p.id===item.id).precio*item.cantidad,0);
+
+ const mensaje=`Hola, Zambré. Quiero realizar este pedido:\n\n${lineas.join("\n")}\n\nTotal: ${dinero(total)}\nNombre: ${nombre}\nTipo: ${tipo}${tipo==="Delivery"?"\nDirección: "+direccion:""}${document.getElementById("notes").value.trim()?"\nNotas: "+document.getElementById("notes").value.trim():""}\n\nQuedo pendiente de la confirmación. ¡Gracias!`;
+
+ window.location.href="https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(mensaje);
+}
+
+mostrarProductos();
+</script>
 </body>
 </html>
